@@ -13,8 +13,8 @@
 
 ## Mars Voyager
 
-[Mars Voyager Gamer Read Me - Web Page]( http://jaanga.github.io/mars/voyager-gamer/ )  
-[Mars Voyager Gamer Read Me - Source Code]( https://github.com/jaanga/mars/voyager-gamer/ )  
+[Mars Voyager Gamer Read Me - Web Page]( http://jaanga.github.io/mars/voyager/gamer/ )  
+[Mars Voyager Gamer Read Me - Source Code]( https://github.com/jaanga/mars/voyager/gamer/ )  
 
 
 ## Links of Interest
