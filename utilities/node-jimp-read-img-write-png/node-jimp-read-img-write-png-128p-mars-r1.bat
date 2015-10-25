@@ -5,36 +5,36 @@ rem The format of %TIME% is HH:MM:SS,CS for example 23:59:59,99
 set STARTTIME=%TIME%
 
 
-REM rem megt88n000hb.img
-REM node node-jimp-read-img-write-png-128p-r1.js megt44n000hb.img zz-mars-heightmaps-128p 0 30 88 44
+rem megt88n000hb.img
+node node-jimp-read-img-write-png-128p-r1.js megt88n000hb.img zz-mars-heightmaps-128p 0 30 88 44
 
-REM node node-jimp-read-img-write-png-128p-r1.js megt44n000hb.img zz-mars-heightmaps-128p 30 60 88 44
+node node-jimp-read-img-write-png-128p-r1.js megt88n000hb.img zz-mars-heightmaps-128p 30 60 88 44
 
-REM node node-jimp-read-img-write-png-128p-r1.js megt44n000hb.img zz-mars-heightmaps-128p 60 90 88 44
-
-
-REM rem megt44n000hb.img
-REM node node-jimp-read-img-write-png-128p-r1.js megt44n000hb.img zz-mars-heightmaps-128p 0 30 44 0
-
-REM node node-jimp-read-img-write-png-128p-r1.js megt44n000hb.img zz-mars-heightmaps-128p 30 60 44 0
-
-REM node node-jimp-read-img-write-png-128p-r1.js megt44n000hb.img zz-mars-heightmaps-128p 60 90 44 0
+node node-jimp-read-img-write-png-128p-r1.js megt88n000hb.img zz-mars-heightmaps-128p 60 90 88 44
 
 
-REM rem megt00n000hb.img
-REM node node-jimp-read-img-write-png-128p-r1.js megt00n000hb.img zz-mars-heightmaps-128p 0 30 -1 -44
+rem megt44n000hb.img
+node node-jimp-read-img-write-png-128p-r1.js megt44n000hb.img zz-mars-heightmaps-128p 0 30 44 0
 
-REM node node-jimp-read-img-write-png-128p-r1.js megt00n000hb.img zz-mars-heightmaps-128p 30 60 -1 -44
+node node-jimp-read-img-write-png-128p-r1.js megt44n000hb.img zz-mars-heightmaps-128p 30 60 44 0
 
-REM node node-jimp-read-img-write-png-128p-r1.js megt00n000hb.img zz-mars-heightmaps-128p 60 90 -1 -44
+node node-jimp-read-img-write-png-128p-r1.js megt44n000hb.img zz-mars-heightmaps-128p 60 90 44 0
 
 
-REM rem megt44s000hb.img
-REM node node-jimp-read-img-write-png-128p-r1.js megt44s000hb.img zz-mars-heightmaps-128p 0 30 -44 -88
+rem megt00n000hb.img
+node node-jimp-read-img-write-png-128p-r1.js megt00n000hb.img zz-mars-heightmaps-128p 0 30 -1 -44
 
-REM node node-jimp-read-img-write-png-128p-r1.js megt44s000hb.img zz-mars-heightmaps-128p 30 60 -44 -88
+node node-jimp-read-img-write-png-128p-r1.js megt00n000hb.img zz-mars-heightmaps-128p 30 60 -1 -44
 
-REM node node-jimp-read-img-write-png-128p-r1.js megt44s000hb.img zz-mars-heightmaps-128p 60 90 -44 -88
+node node-jimp-read-img-write-png-128p-r1.js megt00n000hb.img zz-mars-heightmaps-128p 60 90 -1 -44
+
+
+rem megt44s000hb.img
+node node-jimp-read-img-write-png-128p-r1.js megt44s000hb.img zz-mars-heightmaps-128p 0 30 -44 -88
+
+node node-jimp-read-img-write-png-128p-r1.js megt44s000hb.img zz-mars-heightmaps-128p 30 60 -44 -88
+
+node node-jimp-read-img-write-png-128p-r1.js megt44s000hb.img zz-mars-heightmaps-128p 60 90 -44 -88
 
 
 

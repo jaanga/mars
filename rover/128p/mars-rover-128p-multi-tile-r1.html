@@ -103,11 +103,12 @@
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		document.body.appendChild( renderer.domElement );
 
-		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 15000 );
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 30000 );
 		camera.position.set( 200, 900, 1200 );
 
 		controls = new THREE.OrbitControls( camera, renderer.domElement );
 		controls.maxDistance = 8000;
+		controls.minDistance = 10;
 		controls.enableKeys = false;
 
 		scene = new THREE.Scene();
@@ -116,7 +117,7 @@
 		window.addEventListener( 'keyup', onKeyUp, false );
 
 // assets
-		var axisHelper = new THREE.AxisHelper( 50 );
+		var axisHelper = new THREE.AxisHelper( 500 );
 		scene.add( axisHelper );
 
 		heightmapCanvas = document.createElement( 'canvas' );
@@ -231,9 +232,6 @@
 		heightMesh.geometry.dispose();
 		scene.remove( heightMesh );
 
-
-
-
 		geometry3D.computeFaceNormals();
 		geometry3D.computeVertexNormals();
 //		geometry3D.center();
@@ -313,6 +311,8 @@ console.log( 'tx', tileX, 'ty', tileY, place );
 
 				processTiles();
 
+			checkoutPlace(); 
+
 			}
 
 			checkoutPlace(); 
@@ -333,10 +333,10 @@ console.log( 'tx', tileX, 'ty', tileY, place );
 
 			place = gazetteer[ i ];
 
-			if ( place[ 2 ] > tileYStart + 1 && place[ 2 ] < tileYFinish + 1 && place[ 3 ] > tileXStart && place[ 3 ] < tileXFinish ) {
+			if ( place[ 2 ] > tileYStart + 1 && place[ 2 ] < tileYFinish - 1 && place[ 3 ] > tileXStart - 1 && place[ 3 ] < tileXFinish + 1 ) {
 
 				txt += place[ 0 ] + '<br>&bull; lat:' + place[ 2 ] + ' lon:' + place[ 3 ] + '<br>';
-				drawSprite( place[ 0 ], 0.25, 120, 256 * ( place[ 3 ] - tileX + 2 ), placardYPosition , -256 * ( place[ 2 ] - tileY - 3 ) );
+				drawSprite( place[ 0 ], 0.25, 120, 256 * ( place[ 3 ] - tileX + 0 ), placardYPosition , -256 * ( place[ 2 ] - tileY - 0 ) );
 
 			}
 
