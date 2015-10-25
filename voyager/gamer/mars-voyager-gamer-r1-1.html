@@ -18,12 +18,13 @@
 <script>
 
 	var sourceFolder = 'http://jaanga.github.io/mars/';
+	var sourceFolder = '../../';
 
 	var gazetteerFile = sourceFolder + 'gazetteer/mars-nomenclature.csv';
 
-//	var srcImage = sourceFolder + '/mars-heightmaps/HIQ7R.jpg';
+//	var srcImage = sourceFolder + '/heightmaps/HIQ7R.jpg';
 
-//	var srcImage = sourceFolder + '/mars-heightmaps/MarsHeight.bmp';
+//	var srcImage = sourceFolder + '/heightmaps/MarsHeight.bmp';
 //	var mapWidth = 1536;
 //	var mapHeight = 768;
 
@@ -161,7 +162,7 @@
 
 		for ( var i = 0, j = 0; i < vertices.length; j += 4 ) {
 
-			s = map[ j ] < 128 ? 1 + scl * ( 255 * map[ j ] + map[ j + 1 ] ) :  1 + scl * ( 255 * ( 256 - map[ j ] ) + map[ j + 1 ] );
+			s = 1 + scl * ( map[ j ] + 255 * map[ j + 1 ] ) ;
 
 			vertices[ i++ ] *= s;
 			vertices[ i++ ] *= s;

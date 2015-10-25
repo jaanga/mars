@@ -1,10 +1,10 @@
-[Jaanga]( http://jaanga.github.io/ ) &raquo; [Terrain 2]( http://jaanga.github.io/terrain-r2/ ) &raquo; [Viewers]( http://jaanga.github.io/terrain-r2/viewers/ ) &raquo;
+[Jaanga]( http://jaanga.github.io/ ) &raquo; [Outer Space]( http://jaanga.github.io/outer-space/ ) &raquo; [Mars]( http://jaanga.github.io/mars/ ) &raquo;
 
 [Mars Voyager Read Me]( index.html )
 ===
 
-<span style=display:none; >[You are now in GitHub source code view - click here to view Read Me file as a web page]( http://jaanga.github.io/terrain-r2/viewers/mars-voyager/ "View file as a web page." ) </span>
-<input type=button value='You are now in GitHub web page view - Click here to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/terrain-r2/tree/gh-pages/viewers/mars-voyager/'; />
+<span style=display:none; >[You are now in GitHub source code view - click here to view Read Me file as a web page]( http://jaanga.github.io/mars/voyager/ "View file as a web page." ) </span>
+<input type=button value='You are now in GitHub web page view - Click here to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/mars/tree/gh-pages/voyager/'; />
 
 
 <iframe src="http://exploratoria.github.io/lib/code-edit-view/code-edit-view.html#http://jaanga.github.io/terrain-r2/viewers/mars-voyager/mars-voyager-r1.html" width=100% height=600px ></iframe>  
