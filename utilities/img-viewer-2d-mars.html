@@ -64,33 +64,39 @@
 
 	function getData() {
 
-		if ( xmlHttp.readyState === 4  ) {
+		if ( xmlHttp.readyState !== 4  ) { return; }
 
-			byteArray = new Int16Array( xmlHttp.response );
-			var index = 0;
-			elevations = [];
+//		byteArray = new Int16Array( xmlHttp.response );
 
-			min = 1000000;
-			max = -1000000;
+		byteArray = new Uint8Array( xmlHttp.response );
 
-			for ( var i = 0; i < byteArray.length; i++ ) {
 
-				min = min < byteArray[ i ] ? min : byteArray[ i ];
-				max = max > byteArray[ i ] ? max : byteArray[ i ];
+		var index = 0;
+		elevations = [];
 
-				elevation = byteArray[ i ] + 32767;
-				elevations.push( elevation );
+		min = 1000000;
+		max = -1000000;
 
-				imageDataData[ index++ ] = ( elevation & 0x0000ff );
-				imageDataData[ index++ ] = ( elevation & 0x00ff00 ) >> 8;
-				imageDataData[ index++ ] = ( elevation & 0xff0000 ) >> 16;
-				imageDataData[ index++ ] = 255;
+		for ( var i = 0; i < byteArray.length; ) {
 
-			}
 
-			context.putImageData( imageData, 0, 0 );
+			elevation = 256 * byteArray[ i++ ] + byteArray[ i++ ];
 
-			msg1.innerHTML = 'min: ' + min + ' max: ' + max;
+			elevation = elevation < 32767 ? elevation : elevation - 65535;
+
+			elevation += 32767;
+			elevations.push( elevation );
+
+			imageDataData[ index++ ] = ( elevation & 0x0000ff );
+			imageDataData[ index++ ] = ( elevation & 0x00ff00 ) >> 8;
+			imageDataData[ index++ ] = ( elevation & 0xff0000 ) >> 16;
+			imageDataData[ index++ ] = 255;
+
+		}
+
+		context.putImageData( imageData, 0, 0 );
+
+		msg1.innerHTML = 'min: ' + min + ' max: ' + max;
 
 /*
 			context.moveTo( 0, 360 );
@@ -101,8 +107,6 @@
 			context.lineTo( 720, 720 );
 			context.stroke();
 */
-
-		}
 
 	}
 

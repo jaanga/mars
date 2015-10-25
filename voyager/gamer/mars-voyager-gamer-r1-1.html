@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang=en >
 <head>
-<title>Mars Voyager Gamer R1</title>
+<title>Mars Voyager Gamer R1.1</title>
 <meta charset=utf-8 />
 <meta name=viewport content='width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0' />
 </head>
@@ -22,20 +22,20 @@
 	var gazetteerFile = sourceFolder + 'gazetteer/mars-nomenclature.csv';
 
 //	var srcImage = sourceFolder + '/mars-heightmaps/HIQ7R.jpg';
+
 //	var srcImage = sourceFolder + '/mars-heightmaps/MarsHeight.bmp';
+//	var mapWidth = 1536;
+//	var mapHeight = 768;
+
 	var srcImage = sourceFolder + 'heightmaps/megt90n000cb.png';
+	var mapWidth = 1440;
+	var mapHeight = 720;
 
 	var marsRadiusEquator = 3396;
 	var minPlaceRadiusToDisplay = 50; // radius of feature as defined by the gazetteer
 
-	var mapWidth = 1440;
-	var mapHeight = 720;
-
-//	var mapWidth = 1536;
-//	var mapHeight = 768;
-
 	var scale = 1;
-	var scaleAdjust = 0.001;
+	var scaleAdjust = 0.000005;
 	var scl = scaleAdjust * scale;
 
 	var selectedPlace = Math.floor( Math.random() * 1837 );
@@ -44,7 +44,7 @@
 	var delayTime = 2000;
 	var autoRotateSpeed = 0.2;
 
-	var placardYPosition = 4800;
+	var placardYPosition = 4500;
 	var placardSize = 1;
 
 	var d2r = Math.PI / 180;
@@ -105,6 +105,8 @@
 		controls = new THREE.OrbitControls( camera, renderer.domElement );
 		controls.minDistance = 4000;
 		controls.maxDistance = 15000;
+		controls.enableKeys = false;
+
 		scene = new THREE.Scene();
 
 		controls.autoRotateSpeed = autoRotateSpeed;
@@ -131,23 +133,49 @@
 		contextHeightMap = canvasHeightMap.getContext( '2d' );
 
 		geometry = new THREE.SphereBufferGeometry( marsRadiusEquator, mapWidth - 1, mapHeight - 1 );
-//		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( Math.PI ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( Math.PI ) );
 
 		material3D = new THREE.MeshNormalMaterial( { side: 2 } );
 
 		heightMesh = new THREE.Mesh( geometry, material3D );
+		heightMesh.rotation.y = Math.PI;
 		scene.add( heightMesh );
 
 		placards = new THREE.Object3D();
 		scene.add( placards );
 
-		getGazetteerMoon();
+		getGazetteerMars();
 
 		toggleGradientBackground();
 
 	}
 
-	function getGazetteerMoon() {
+	function updateTerrain() {
+
+		contextHeightMap.drawImage( heightMap, 0, 0, heightMap.width, heightMap.height );
+
+		map = contextHeightMap.getImageData( 0, 0, mapWidth, mapHeight ).data;
+
+		heightMesh.geometry = geometry.clone();
+		vertices = heightMesh.geometry.attributes.position.array;
+
+		for ( var i = 0, j = 0; i < vertices.length; j += 4 ) {
+
+			s = map[ j ] < 128 ? 1 + scl * ( 255 * map[ j ] + map[ j + 1 ] ) :  1 + scl * ( 255 * ( 256 - map[ j ] ) + map[ j + 1 ] );
+
+			vertices[ i++ ] *= s;
+			vertices[ i++ ] *= s;
+			vertices[ i++ ] *= s;
+
+		}
+
+		heightMesh.geometry.computeFaceNormals();
+		heightMesh.geometry.computeVertexNormals();
+
+	}
+
+
+	function getGazetteerMars() {
 
 		var data = requestGazetteer( gazetteerFile );
 		var xmlHttp;
@@ -204,7 +232,13 @@
 
 				var place = gazetteer[ this.selectedIndex ];
 
-				pos = convertPosition( place[ 2 ], - place[ 3 ], placardYPosition + 2000 );
+				pos = convertPosition( place[ 2 ], - place[ 3 ], placardYPosition );
+
+				drawSprite( place[ 0 ], placardSize, 120, pos.x, pos.y, pos.z );
+
+				pos = convertPosition( place[ 2 ], - place[ 3 ] , placardYPosition + 2000 )
+
+//console.log( place[ 2 ],  - place[ 3 ] , place );
 
 				camera.position.set( pos.x, pos.y, pos.z );
 
@@ -219,56 +253,10 @@
 
 	}
 
-	function updateTerrain() {
-
-		contextHeightMap.drawImage( heightMap, 0, 0, heightMap.width, heightMap.height, 0, 0, mapWidth, mapHeight );
-
-		map = contextHeightMap.getImageData( 0, 0, mapWidth, mapHeight ).data;
-
-		min = 1000000;
-		max = -1000000;
-count = 0;
-		heightMesh.geometry = geometry.clone();
-		vertices = heightMesh.geometry.attributes.position.array;
-
-		for ( var i = 0, j = 0; i < vertices.length; j += 4 ) {
-
-			min = min < map[ j ] + 255 * map[ j + 1 ] ? min : map[ j ] + 255 * map[ j + 1 ];
-			max = max > ( map[ j ] + 255 * map[ j + 1 ] ) ? max : map[ j ] + 255 * map[ j + 1 ];
-
-//		s = 1 + scl * ( map[ j ] );
-
-			if ( map[ j ] < 128 ) { 
-
-				count++; 
-
-				s = 1 + scl * ( map[ j ] + 255 );
-
-			} else {
-
-				s = 1 + scl * ( map[ j ] );
-
-			}
-
-			min = min < s ? min : s;
-			max = max > s ? max : s;
-
-			vertices[ i++ ] *= s;
-			vertices[ i++ ] *= s;
-			vertices[ i++ ] *= s;
-
-		}
-
-		heightMesh.geometry.computeFaceNormals();
-		heightMesh.geometry.computeVertexNormals();
-
-console.log( min, max, 'count', count );
-	}
-
 	function convertPosition( lat, lon, radius ) {
 
 		var rc = radius * Math.cos( lat * d2r );
-		return v( rc * Math.cos( lon * d2r ), radius * Math.sin( lat * d2r ), rc * Math.sin( lon * d2r) );
+		return v3( rc * Math.cos( lon * d2r ), radius * Math.sin( lat * d2r ), rc * Math.sin( lon * d2r) );
 
 	}
 
@@ -286,7 +274,7 @@ console.log( min, max, 'count', count );
 		placards.add ( sprite );
 
 		var geometry = new THREE.Geometry();
-		geometry.vertices = [ v( 0, 0, 0 ),  v( x, y, z ) ];
+		geometry.vertices = [ v3( 0, 0, 0 ),  v3( x, y, z ) ];
 		var material = new THREE.LineBasicMaterial( { color: 0xaaaaaa } );
 		var line = new THREE.Line( geometry, material );
 		placards.add( line );
@@ -296,15 +284,13 @@ console.log( min, max, 'count', count );
 	function canvasMultilineText( textArray, parameters ) {
 
 		var parameters = parameters || {} ;
-
+		var width = 0;
 		var canvas = document.createElement( 'canvas' );
 		var context = canvas.getContext( '2d' );
 
 		if ( typeof textArray === 'string' ) textArray = [ textArray ];
 
 		context.font = parameters.font ? parameters.font : '48px sans-serif';
-
-		var width = 0;
 
 		for (var i = 0, len = textArray.length; i < len; i++) {
 
@@ -345,7 +331,7 @@ console.log( min, max, 'count', count );
 
 		viz = chkPlacards.checked;
 
-			placards.traverse( function ( child ) {
+		placards.traverse( function ( child ) {
 
 				child.visible = viz;
 
@@ -414,7 +400,7 @@ console.log( min, max, 'count', count );
 
 	}
 
-	function v( x, y, z ){ return new THREE.Vector3( x, y, z ); }
+	function v3( x, y, z ){ return new THREE.Vector3( x, y, z ); }
 
 	function animate( timestamp ) {
 
@@ -425,6 +411,7 @@ console.log( min, max, 'count', count );
 		} else {
 
 			controls.autoRotate = false;
+
 		}
 
 		renderer.render( scene, camera );

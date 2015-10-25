@@ -44,13 +44,13 @@
 //	var fileName = 	'C:/temp/moon-heightmaps/WAC_GLD100_E300S2250_256P.IMG';
 
 
-	var fileName = '../heightmaps/megt90n000cb.img';
-	var width = 1440 * 2;
-	var height = 720;
+//	var fileName = '../../heightmaps/megt90n000cb.img';
+//	var width = 1440 * 2;
+//	var height = 720;
 
-//	var fileName = 'c:/temp/mars-heightmaps/img-128p/megt00n000hb.img';
-//	var width = 11520 * 2;
-//	var height = 5632;
+	var fileName = 'c:/temp/mars-heightmaps/img-128p/megt00n000hb.img';
+	var width = 11520 * 2;
+	var height = 5632;
 
 	var byteArray;
 
@@ -66,7 +66,7 @@
 			var info = document.body.appendChild( document.createElement( 'div' ) );
 //			info.style.cssText = 'margin: 0 20px; position: absolute; ';
 			info.innerHTML = '<h2><a href="" >' + document.title + '</a></h2>' +
-				'<p><a id=download href="" onclick=saveIt(); ><button>Save it</button></a></p>' +
+//				'<p><a id=download href="" onclick=saveIt(); ><button>Save it</button></a></p>' +
 				'<div id=msg0 ></div>' +
 				'<div id=msg1 ></div>' +
 				'<div id=msg2 ></div>' +
@@ -106,9 +106,26 @@
 
 		function getData() {
 
-			if ( xmlHttp.readyState === 4  ) {
+			if ( xmlHttp.readyState !== 4  ) { return; }
 
 			byteArray = new Uint8Array( xmlHttp.response );
+
+//			var x = new DataView( xmlHttp.response );
+
+/*
+			myString = '';
+			for ( var i=0; i< byteArray.byteLength; i++ ) {
+
+				myString += String.fromCharCode( byteArray[ i ] );
+
+			}
+console.log( myString );
+*/
+
+//		arrayBuffer = new Uint8Array( xmlHttp.response ).buffer;
+//		byteArray = new Int16Array( arrayBuffer );
+
+//console.log( xmlHttp.response );
 
 			var index = 0;
 			elevations = [];
@@ -123,27 +140,42 @@
 
 			}
 
-console.log( elevations );
+//console.log( elevations );
 
-				txt = prefix;
+			txt = prefix;
 
-				for ( var i = 0; i < 15; i++ ) {
+			for ( var i = 0; i < 15; i++ ) {
 
-					txt += elevations[ i ] + ' ';
-
-				}
-
-				txt += ' ... ';
-
-				for ( var i = 6; i > 0; i-- ) {
-
-					txt += elevations[ elevations.length - i ] + ' ';
-
-				}
-
-				msg1.innerHTML += txt + '<br><br>';
+				txt += elevations[ i ] + ' ';
 
 			}
+
+			txt += ' ... ';
+
+			for ( var i = 6; i > 0; i-- ) {
+
+				txt += elevations[ elevations.length - i ] + ' ';
+
+			}
+
+			txt += '<br>';
+
+			for ( var i = 0; i < 30; i++ ) {
+//				txt.push( x.getUint8( i ).toString(16) );
+//				txt += String.fromCharCode( byteArray[ i ] ) + ' '; // test first line etc
+				txt += byteArray[ i ].toString( 16 ) + ' ';
+			}
+
+			txt += '<br>';
+
+			for ( var i = 0; i < 30; i++ ) {
+//				txt.push( x.getUint8( i ).toString(16) );
+				txt += byteArray[ i ] + ' ';
+			}
+
+//console.log( txt );
+
+			msg1.innerHTML += txt + '<br><br>';
 
 		}
 

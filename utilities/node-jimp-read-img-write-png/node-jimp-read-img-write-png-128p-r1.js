@@ -7,11 +7,14 @@
 
 // lat and lon from lower left
 
-	var widthSource = 23040; // 256p ~ 90 degrees * 256 pixels
-	var heightSource = 15360;
+//	var widthSource = 23040; // 256p ~ 90 degrees * 256 pixels
+//	var heightSource = 15360;
 
-	var widthDestination = 256;
-	var heightDestination = 256;
+	var widthSource = 11520;
+	var heightSource = 5632;
+
+	var widthDestination = 128;
+	var heightDestination = 128;
 
 	var byteArray;
 	var bitmap;
@@ -19,8 +22,8 @@
 	var signEW;
 	var signNS;
 
-	var path = 'c:/temp/moon-heightmaps/';
-	var namePrefix = '256p';
+	var path = 'c:/temp/mars-heightmaps/'
+	var namePrefix = '128p';
 	var fileName = process.argv[ 2 ];
 
 	var tileXStart = parseFloat( process.argv[ 4 ] );
@@ -32,6 +35,7 @@
 	var tileY = tileYStart;
 
 	var destinationDirName = path + process.argv[ 3 ];
+
 
 	init();
 
@@ -51,7 +55,7 @@ console.log( 'new dir: ', dname );
 
 		}
 
-		fs.readFile( path + fileName, callbackReadFile );
+		fs.readFile( path + 'img-128p/' + fileName, callbackReadFile );
 
 	}
 
@@ -65,8 +69,22 @@ console.log( 'new dir: ', dname );
 
 // http://stackoverflow.com/questions/8609289/convert-a-binary-nodejs-buffer-to-javascript-arraybuffer
 
-		var arrayBuffer = new Uint8Array( buffer).buffer;
-		byteArray = new Int16Array( arrayBuffer );
+//		var arrayBuffer = new Uint8Array( buffer).buffer;
+//		byteArray = new Int16Array( arrayBuffer );
+
+		byteArray = new Uint8Array( buffer );
+
+		elevations = [];
+
+		for ( var i = 0; i < byteArray.length; ) {
+
+			elevation = 256 * byteArray[ i++ ] + byteArray[ i++ ];
+
+			elevation = elevation < 32767 ? elevation : elevation - 65535;
+
+			elevations.push( elevation );
+
+		}
 
 console.log( '\nfileName: ', fileName );
 console.log( 'byteArray.length: ', byteArray.length );
@@ -110,7 +128,7 @@ console.log(  'reading data complete - now processing the save' );
 
 //console.log( 'yTmp', yTmp );
 
-			var yStart = heightDestination * Math.abs( yTmp ) + 2; // decide manually if needs to be 1 or 2
+			var yStart = heightDestination * Math.abs( yTmp ); // decide manually if needs to be 0, 1 or 2
 			var yFinish = yStart + heightDestination;
 			var xStart = widthDestination * tX;
 			var xFinish = xStart + widthDestination;
@@ -121,7 +139,7 @@ console.log(  'reading data complete - now processing the save' );
 			for ( var y = yStart; y < yFinish; y++ ) {
 				for ( var x = xStart; x < xFinish; x++ ) {
 
-					elevation = byteArray[ y * widthSource + x ] + 10000;
+					elevation = elevations[ y * widthSource + x ] + 32767;
 
 //					min = elevation < min ? elevation : min;
 //					max = elevation > max ? elevation : max;
@@ -138,7 +156,7 @@ console.log(  'reading data complete - now processing the save' );
 
 			if ( tY > -1  ) {
 
-				yy = tileYStart - tY ;
+				yy = tileYStart - tY - 1;
 
 			} else {
 
