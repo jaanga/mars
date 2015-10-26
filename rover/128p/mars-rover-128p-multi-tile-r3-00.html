@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Mars Rover 128P R1</title>
+<title>Mars Rover 128P R3</title>
 <meta name=viewport content='width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0' />
 </head>
 <body>
@@ -11,7 +11,31 @@
 <script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
 <script>
 
-	var path = 'http://jaanga.github.io/';
+
+	var path = 'c:/temp/mars-heightmaps/zz-mars-heightmaps-128p/'; // for developing etc
+//	var path = 'http://jaanga.github.io/';
+
+	var sourceSize = 128;
+	var pixels = 128;
+
+	var latStartDefault = 4;
+	var latCountDefault = 8;
+
+	var lonStartDefault = -4;
+	var lonCountDefault = 8;
+
+	var lat;
+	var latCount;
+	var latStart;
+	var latFinish;
+
+	var lon;
+	var lonCount;
+	var lonStart;
+	var lonFinish;
+
+
+//	var path = 'http://jaanga.github.io/';
 	var heightmapPath = 'c:/temp/mars-heightmaps/zz-mars-heightmaps-128p/';
 
 	var gazetteerFile = path + 'mars/gazetteer/mars-nomenclature.csv';
@@ -58,7 +82,7 @@
 	function init() {
 
 		var css = document.body.appendChild( document.createElement('style') );
-		css.innerHTML = 'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
+		css.innerHTML = 'body { font: 12pt monospace; margin: 0; /* overflow: hidden; */ }' +
 			'h2 { margin: 0; }' +
 			'#bars, #i { font-size: 24pt; text-decoration: none; }' +
 			'#bars { color: pink; } ' +
@@ -91,7 +115,8 @@
 				'Roll = left | 1 finger<br>Zoom = scroll | 2 finger<br>Move = right | 3 finger' +
 			'</small></p>' +
 			'<hr>' +
-			'<div id=info ></div>' +
+			'<div id=info1 ></div>' +
+			'<div id=info2 ></div>' +
 			'<p id=places>downloading gazetteer...</p>' +
 		'';
 
@@ -114,6 +139,7 @@
 		scene = new THREE.Scene();
 
 		window.addEventListener( 'resize', onWindowResize, false );
+		window.addEventListener ( 'hashchange', hashChange, false );
 		window.addEventListener( 'keydown', onKeyUp, false );
 
 // assets
@@ -139,13 +165,61 @@
 		tile = document.createElement( 'img' );
 		tile.crossOrigin = 'Anonymous';
 
-		processTiles();
+//		toggleGradientBackground();
 
-		toggleGradientBackground();
+		hashChange();
 
 	}
 
-	function processTiles() {
+
+	function hashChange() {
+
+		hash = location.hash.split( '#' );
+
+		latStart = lat = hash[ 1 ] ? parseInt( hash[ 1 ], 10 ) : latStartDefault;
+		latCount = hash[ 2 ] ? parseInt( hash[ 2 ], 10 ) : latCountDefault;
+		latFinish = latStart - latCount;
+
+
+		lonStart = lon = hash[ 3 ] ? parseInt( hash[ 3 ], 10 ) : lonStartDefault;
+		lonCount = hash[ 4 ] ? parseInt( hash[ 4 ], 10 ) : lonCountDefault;
+		lonFinish = lonStart + lonCount;
+
+//		heightmapCanvas.width = lonCount * pixels;
+//		heightmapCanvas.height = latCount * pixels;
+
+		processTiles();
+
+//console.log( hash, lat, latStart, latFinish, 'lon', lon, lonStart, lonFinish  );
+
+	}
+
+	function processTiles( x, y ) {
+
+		if ( lat > latFinish && lon < lonFinish ) {
+
+			addImage( lon, lat-- );
+
+		} else if ( lon < lonFinish - 1 ) {
+
+			lon++;
+			lat = latStart;
+
+			processTiles();
+
+		} else {
+
+			info1.innerHTML = 'lat: ' + lat + ' lon: ' + lon; 
+			info2.innerHTML = 'Box - lat: ' + latStart + ' to ' + ( latFinish + 1 ) + ' lon: ' + lonStart + ' to ' + ( lonFinish - 1 );
+
+			updateTerrain();
+
+		}
+
+	}
+
+
+	function processTilesXXXX() {
 
 //console.log( 'tx', tileX, 'ty', tileY, 's', tileXFinish, tileYFinish );
 
@@ -175,7 +249,25 @@
 
 		tile.onload = function() {
 
-			heightmapContext.drawImage( tile, 0, 0, widthDestination, heightDestination, ( x - tileXStart ) * widthDestination, ( 7 - y + tileYStart ) * heightDestination, widthDestination, heightDestination ); 
+			heightmapContext.drawImage( tile, 0, 0, sourceSize, sourceSize, pixels * ( x - lonStart ), pixels * ( latStart - y ), pixels, pixels ); 
+
+			processTiles();
+
+		}
+
+		signEW = x < 0 ? '' : '+';
+		signNS = y < 0 ? '' : '+';
+
+		tile.src = path + signEW + Math.floor( x ) + '/' + '128p' + signEW + Math.floor( x ) + signNS + Math.floor( y ) + '.png';
+
+	}
+
+
+	function addImageXXX( x, y ) {
+
+		tile.onload = function() {
+
+			heightmapContext.drawImage( tile, 0, 0, widthDestination, heightDestination, ( x - tileXStart ) * widthDestination, ( 7 - y + tileYStart ) * heightDestination, widthDestination, heightDestination );
 
 			processTiles();
 
@@ -236,10 +328,73 @@
 //		heightMesh.position.y = -2000; //heightMeshYPosition;
 		scene.add( heightMesh );
 
-		if ( gazetteer === undefined ) { getGazetteerMoon(); } else { checkoutPlace(); }
+//		if ( gazetteer === undefined ) { getGazetteerMoon(); } else { checkoutPlace(); }
 
 	}
 
+// cursor keys
+
+	function onKeyUp ( event ) {
+
+		event.preventDefault();
+
+//console.log( 'key', event.keyCode );
+
+		switch( event.keyCode ) {
+
+			case 37: goWest(); break; // cursor left
+
+			case 39: goEast(); break; // cursor right
+
+			case 38: goNorth(); break; // cursor up
+
+			case 40: goSouth(); break; // cursor down
+
+		}
+
+	}
+
+	function goNorth() {
+
+		lon = lonStart - 1;
+
+		latStart = ++latStart > 88 ? 87: latStart;
+		latFinish = latStart - latCount;
+
+		location.hash = '#' + latStart + '#' + latCount + '#' + lonStart + '#' + lonCount;
+
+	}
+
+	function goSouth() {
+
+		lon = lonStart - 1;
+
+		latStart = --latStart > ( -89 + latCount ) ? latStart : -89 + latCount;
+		latFinish = latStart - latCount;
+
+		location.hash = '#' + latStart + '#' + latCount + '#' + lonStart + '#' + lonCount;
+
+	}
+
+	function goEast() {
+
+		lonStart = ++lonStart > 170 ? -180 : lonStart;
+		lon = lonStart - 1;
+		lonFinish = lonStart + lonCount;
+
+		location.hash = '#' + latStart + '#' + latCount + '#' + lonStart + '#' + lonCount;
+
+	}
+
+	function goWest() {
+
+		lonStart = --lonStart < -180 ? 170 : lonStart;
+		lon = lonStart - 1;
+		lonFinish = lonStart + lonCount;
+
+		location.hash = '#' + latStart + '#' + latCount + '#' + lonStart + '#' + lonCount;
+
+	}
 
 	function getGazetteerMoon() {
 
@@ -257,10 +412,10 @@
 
 		function callbackGazetteer() {
 
-			if ( xmlHttp.readyState != 4  ) { 
+			if ( xmlHttp.readyState != 4  ) {
 
 				places.innerHTML += '.';
-				return; 
+				return;
 
 			}
 
@@ -307,11 +462,11 @@ console.log( 'tx', tileX, 'ty', tileY, place );
 
 				processTiles();
 
-				checkoutPlace(); 
+				checkoutPlace();
 
 			}
 
-			checkoutPlace(); 
+			checkoutPlace();
 
 		}
 
@@ -343,71 +498,6 @@ console.log( 'tx', tileX, 'ty', tileY, place );
 
 		places.innerHTML = txt;
 		scene.add( placards );
-
-	}
-
-
-// cursor keys
-
-	function onKeyUp ( event ) {
-
-		event.preventDefault();
-
-//console.log( 'key', event.keyCode );
-
-		switch( event.keyCode ) {
-
-			case 37: goWest(); break; // cursor left
-
-			case 39: goEast(); break; // cursor right
-
-			case 38: goNorth(); break; // cursor up
-
-			case 40: goSouth(); break; // cursor down
-
-		}
-
-	}
-
-	function goNorth() {
-
-		tileX = tileXStart - 1;
-
-		tileYStart = ++tileYStart >= 56 ? 56: tileYStart;
-		tileYFinish = tileYStart + tileYCount;
-
-		processTiles();
-
-	}
-
-	function goSouth() {
-
-		tileX = tileXStart - 1;
-		--tileYStart;
-		tileYStart = tileYStart < -60 ? -60 : tileYStart;
-		tileYFinish = tileYStart + tileYCount;
-
-		processTiles();
-
-	}
-
-	function goEast() {
-
-		tileXStart = ++tileXStart > 175 ? -180 : tileXStart;
-		tileX = tileXStart;
-		tileXFinish = tileXStart + tileXCount;
-
-		processTiles();
-
-	}
-
-	function goWest() {
-
-		tileXStart = --tileXStart < -180 ? 175 : tileXStart;
-		tileX = tileXStart;
-		tileXFinish = tileXStart + tileXCount;
-
-		processTiles();
 
 	}
 

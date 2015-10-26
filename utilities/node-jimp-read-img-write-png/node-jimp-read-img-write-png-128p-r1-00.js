@@ -71,7 +71,6 @@ console.log( 'new dir: ', dname );
 
 //		var arrayBuffer = new Uint8Array( buffer).buffer;
 //		byteArray = new Int16Array( arrayBuffer );
-// does not seem to work when bigger value is first - 'big endian'
 
 		byteArray = new Uint8Array( buffer );
 
@@ -96,9 +95,9 @@ console.log( 'byteArray.length: ', byteArray.length );
 
 	function processTiles() {
 
-//console.log( 'tx', tileX, '<', tileXFinish, 'ty', tileY, '>', tileYFinish, tileY > tileYFinish );
+console.log( 'tx', tileX, '<', tileXFinish, 'ty', tileY, '>', tileYFinish, tileY > tileYFinish );
 
-		if ( tileY > tileYFinish && tileX < tileXFinish ) {
+		if ( tileY >= tileYFinish && tileX < tileXFinish ) {
 
 			writePNG( tileX, tileY-- );
 
@@ -117,48 +116,30 @@ console.log(  'reading data complete - now processing the save' );
 
 	}
 
-	function writePNG( tX, tY ) { // tilex , tileY
+	function writePNG( tX, tY ) {
 
 		var image = new Jimp( widthDestination, heightDestination, function( error, image ) {
 
 			this.rgba( false ); // makes smaller file
 
-			yDelta = tileYStart - tY;
+			var index = 0;
 
-			var yStart = heightDestination * Math.abs( yDelta ); // decide manually if needs to be 0, 1 or 2
+			yTmp = tY < 0 ? tY + 1 : tY - 1;
 
-//			yStart = yStart < 2 && ( tX < 0 || tX > 90 ) ? 2 : yStart;
-//			yStart = yStart < 15 ? 15 : yStart;
+console.log( 'yTmp', yTmp );
 
+			var yStart = heightDestination * Math.abs( yTmp ); // decide manually if needs to be 0, 1 or 2
 			var yFinish = yStart + heightDestination;
-//			var yFinish = yStart < 15 ? heightDestination : yStart + heightDestination;
-
-
 			var xStart = widthDestination * tX;
 			var xFinish = xStart + widthDestination;
 
-//if ( tY > -5 )
-//console.log( 'tX', tX, 'xStart', xStart, 'xFinish', xFinish, ' - tY', tY, 'yStart', yStart, 'yFinish', yFinish, 'yDelta', yDelta );
-
 			min = 1000000;
 			max = 0;
-			var index = 0;
 
 			for ( var y = yStart; y < yFinish; y++ ) {
-
-// catch the errors in the data
-
-				ytmp = y < 1 && tX < 0 && tX > -90 ? 1 : y;
-
-				ytmp = y < 2 && tX < -90 ? 2 : ytmp;
-
-				ytmp = y === yFinish - 1  && tX > 89 ? yFinish - 2 : ytmp;
-
 				for ( var x = xStart; x < xFinish; x++ ) {
 
-// without the 32767, makes for a split in the numbers...
-
-					elevation = elevations[ ytmp * widthSource + x ] + 32767;
+					elevation = elevations[ y * widthSource + x ] + 32767;
 
 //					min = elevation < min ? elevation : min;
 //					max = elevation > max ? elevation : max;
@@ -173,21 +154,31 @@ console.log(  'reading data complete - now processing the save' );
 
 			signEW = tX < 0 ? '' : '+';
 
-			yTmp = tY > 0 ? tY - 1 : tY;
 
-			signNS = yTmp < 0 ? '' : '+';
+			if ( tY > -1  ) {
 
-			tname = namePrefix + signEW + tX + signNS + yTmp + '.png';
+				yy = tileYStart - tY - 1;
 
-		}).write( destinationDirName + '/' + signEW + tX + '/' + tname, callbackWrite( tname, tX, tY, 'yTmp', yTmp ) );
+			} else {
+
+				yy = yTmp - 1;
+
+			}
+
+			signNS = yy < 0 ? '' : '+';
+
+			tname = namePrefix + signEW + tX + signNS + yy + '.png';
+
+		}).write( destinationDirName + '/' + signEW + tX + '/' + tname, callbackWrite( tname, tX, tY, yy ) );
+
+
 
 
 	}
 
-	function callbackWrite( txt, tX, tY, yTmp ) {
+	function callbackWrite( txt, tX, tY, yy ) {
 
-//if ( tY < -85 )
-//console.log(  'write: ', txt, tX, tY, yTmp );
+console.log(  'write: ', txt, tX, tY, yy );
 //console.log( 'min: ', min, 'max: ', max );
 
 		processTiles();
