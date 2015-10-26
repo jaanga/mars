@@ -127,7 +127,7 @@
 		navigation.innerHTML = '<p>' +
 			'<button onclick=goNorth(); >North</button> ' +
 			'<button onclick=goSouth(); >South</button> / ' +
-			'<button onclick=goWest(); >West</button>' +
+			'<button onclick=goWest(); >West</button> ' +
 			'<button onclick=goEast(); >East</button><br>' +
 		'</p>';
 
@@ -179,11 +179,11 @@
 		tile = document.createElement( 'img' );
 		tile.crossOrigin = 'Anonymous';
 
-		toggleGradientBackground();
-
 		hashChange();
 
-//		getGazetteerMars();
+		getGazetteerMars();
+
+		toggleGradientBackground();
 
 	}
 
@@ -205,7 +205,6 @@
 		lonFinish = lonStart + lonCount;
 
 		processTiles();
-
 
 //console.log( hash, lat, latStart, latFinish, 'lon', lon, lonStart, lonFinish  );
 
@@ -231,11 +230,7 @@
 
 			updateTerrain();
 
-			if ( gazetteer === undefined ) {
-
-				getGazetteerMars( true );
-
-			} else { checkoutPlace(); }
+			checkoutPlace();
 
 		}
 
@@ -403,8 +398,6 @@
 
 			}
 
-//			if ( start ) selPlace.onchange();
-
 		}
 
 	}
@@ -437,7 +430,6 @@
 		scene.add( placards );
 
 	}
-
 
 // draw placards
 
