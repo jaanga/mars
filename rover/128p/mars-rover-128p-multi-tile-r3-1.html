@@ -18,10 +18,10 @@
 	var sourceSize = 128;
 	var pixels = 128;
 
-	var latStartDefault = 8;
+	var latStartDefault = 1;
 	var latCountDefault = 8;
 
-	var lonStartDefault = 8;
+	var lonStartDefault = -35;
 	var lonCountDefault = 8;
 
 	var lat;
@@ -111,7 +111,7 @@
 
 			'<p>Heights: <input type=range min=0 max=2 step=0.05 value=1 onchange=scale=this.value;scl=scale*scaleAdjust;processTiles(); /></p>' +
 			'<div><input type=checkbox id=chkGradient onchange=toggleGradientBackground(); checked /> Display gradient</div>' +
-			'<div><input type=checkbox id=chkRotate > Auto Rotation</div>' +
+			'<div><input type=checkbox id=chkRotate checked > Auto Rotation</div>' +
 			'<div><small>' +
 				'Use cursor keys to rove the moon<br>' +
 				'Roll = left | 1 finger<br>Zoom = scroll | 2 finger<br>Move = right | 3 finger' +
@@ -121,6 +121,16 @@
 			'<div id=info2 ></div>' +
 			'<div id=places >downloading gazetteer...</div>' +
 		'';
+
+		navigation = document.body.appendChild( document.createElement( 'div' ) );
+		navigation.style.cssText = ' bottom: 0; left: 0; margin: 10px auto; position: absolute; right: 0; width: 250px; z-index: 1; ';
+		navigation.innerHTML = '<p>' +
+			'<button onclick=goNorth(); >North</button> ' +
+			'<button onclick=goSouth(); >South</button> / ' +
+			'<button onclick=goEast(); >East</button> ' +
+			'<button onclick=goWest(); >West</button><br>' +
+
+		'</p>';
 
 		stats = new Stats();
 		stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0; z-index: 100; ';
@@ -167,14 +177,14 @@
 //		heightMesh.position.y = -300; //heightMeshYPosition;
 //		scene.add( heightMesh );
 
-//		tile = document.createElement( 'img' );
-//		tile.crossOrigin = 'Anonymous';
+		tile = document.createElement( 'img' );
+		tile.crossOrigin = 'Anonymous';
 
 		toggleGradientBackground();
 
 		hashChange();
 
-		getGazetteerMars();
+//		getGazetteerMars();
 
 	}
 
@@ -197,6 +207,7 @@
 
 		processTiles();
 
+
 //console.log( hash, lat, latStart, latFinish, 'lon', lon, lonStart, lonFinish  );
 
 	}
@@ -216,10 +227,16 @@
 
 		} else {
 
-			info1.innerHTML = 'Center lat:' + lat + ' lon:' + lon; 
+			info1.innerHTML = 'Center lat:' + lat + ' lon:' + lon;
 			info2.innerHTML = '<small>Area lat:' + ( latFinish + 1 )  + 'to' + latStart + ' lon:' + lonStart + 'to' + ( lonFinish - 1 ) + '<small>';
 
 			updateTerrain();
+
+			if ( gazetteer === undefined ) {
+
+				getGazetteerMars( true );
+
+			} else { checkoutPlace(); }
 
 		}
 
@@ -227,12 +244,12 @@
 
 	function addImage( x, y ) {
 
-		var tile = document.createElement( 'img' );
-		tile.crossOrigin = 'Anonymous';
+//		var tile = document.createElement( 'img' );
+//		tile.crossOrigin = 'Anonymous';
 
 		tile.onload = function() {
 
-			heightmapContext.drawImage( tile, 0, 0, sourceSize, sourceSize, pixels * ( x - lonStart ), pixels * ( latStart - y ), pixels, pixels ); 
+			heightmapContext.drawImage( tile, 0, 0, sourceSize, sourceSize, pixels * ( x - lonStart ), pixels * ( latStart - y ), pixels, pixels );
 
 			processTiles();
 
@@ -267,8 +284,6 @@
 
 		scene.add( heightMesh );
 
-		if ( gazetteer === undefined ) { getGazetteerMoon(); } else { checkoutPlace(); }
-
 	}
 
 // cursor keys
@@ -295,6 +310,8 @@
 
 	function goNorth() {
 
+		chkRotate.checked = false;
+
 		lat = ++lat > 88 ? 87: lat;
 
 		location.hash = '#' + lat + '#' + latCount + '#' + lon + '#' + lonCount;
@@ -302,6 +319,8 @@
 	}
 
 	function goSouth() {
+
+		chkRotate.checked = false;
 
 		lat = --lat > ( -89 + latCount ) ? lat : -89 + latCount;
 
@@ -311,6 +330,8 @@
 
 	function goEast() {
 
+		chkRotate.checked = false;
+
 		lon = ++lon < 179 - lonCount ? lon : -180 ;
 
 		location.hash = '#' + lat + '#' + latCount + '#' + lon + '#' + lonCount;
@@ -319,13 +340,15 @@
 
 	function goWest() {
 
+		chkRotate.checked = false;
+
 		lon = --lon > -180 + lonCount ? lon : 179;
 
 		location.hash = '#' + lat + '#' + latCount + '#' + lon + '#' + lonCount;
 
 	}
 
-	function getGazetteerMars() {
+	function getGazetteerMars( start ) {
 
 		var data = requestGazetteer( gazetteerFile );
 		var xmlHttp;
@@ -381,7 +404,7 @@
 
 			}
 
-			selPlace.onchange();
+//			if ( start ) selPlace.onchange();
 
 		}
 
@@ -402,7 +425,7 @@
 			placeLon = placeLon < 180 ? placeLon : placeLon - 360;
 			placeLat = parseFloat( place[ 2 ] );
 
-			if ( placeLat < latStart && placeLat > latFinish && placeLon > lonStart && placeLon < lonFinish ) {
+			if ( placeLat < latStart && placeLat > latFinish && placeLon > lonStart && placeLon < lonFinish  && placeLat > -88 && placeLat < 88 ) {
 
 				txt += place[ 0 ] + '<br>&bull; lat:' + placeLat.toFixed( 2 ) + ' lon:' + placeLon.toFixed( 2 ) + '<br>';
 				drawSprite( place[ 0 ], 0.25, 120, - 128 * ( lon - placeLon ), placardYPosition , 128 * ( lat - placeLat + 1 ) );
