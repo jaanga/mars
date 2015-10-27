@@ -12,6 +12,7 @@
 
 ### Tourist sites
 
+* [Appollinaris Mons]( http://jaanga.github.io/mars/rover/128p/dev/#-10#8#174#8 )
 * [Ascraeus Chasmata]( http://jaanga.github.io/mars/rover/128p/dev/#8#8#-106#8 )
 * [Melas Chasma]( http://jaanga.github.io/mars/rover/128p/dev/#-11#8#-73#8 )
 * [Olympus Mons]( http://jaanga.github.io/mars/rover/128p/dev/#18#8#-134#8 )
