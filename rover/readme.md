@@ -1,4 +1,4 @@
-[Jaanga]( http://jaanga.github.io/ ) &raquo; [Outer Space]( http://jaanga.github.io/outer-space/ ) &raquo; [Mars]( http://jaanga.github.io/outer-space/mars ) &raquo; 
+[Jaanga]( http://jaanga.github.io/ ) &raquo; [Outer Space]( http://jaanga.github.io/outer-space/ ) &raquo; [Mars]( http://jaanga.github.io/mars ) &raquo; 
 
 [Mars Rover]( index.html )
 ===
@@ -9,11 +9,15 @@
 
 [Mars Rover 128P Dev]( http://jaanga.github.io/mars/rover/128p/dev/index.html )
 
-* [Mars Rover 128P Dev]( http://jaanga.github.io/mars/rover/128p/dev/index.html )
+
+### Tourist sites
+
+* [Ascraeus Chasmata]( http://jaanga.github.io/mars/rover/128p/dev/#8#8#-106#8 )
+* [Melas Chasma]( http://jaanga.github.io/mars/rover/128p/dev/#-11#8#-73#8 )
+* [Olympus Mons]( http://jaanga.github.io/mars/rover/128p/dev/#18#8#-134#8 )
+* [Tharsis]( http://jaanga.github.io/mars/rover/128p/dev/#0#8#-100#8 )
+* [Tharsis Montes]( http://jaanga.github.io/mars/rover/128p/dev/#1#8#-113#8 )
+* [Uranus Tholus]( http://jaanga.github.io/mars/rover/128p/dev/#26#8#-98#8 )
 
 
-[Ascraeus Chasmata]( http://jaanga.github.io/mars/rover/128p/dev/#8#8#-106#8 )
-
-[Olympus Mons]( http://jaanga.github.io/mars/rover/128p/dev/#18#8#-134#8 )
-
-[Uranus Tholus]( http://jaanga.github.io/mars/rover/128p/dev/#26#8#-98#8 )
+[Mars Voyager]( http://jaanga.github.io/mars/voyager/gamer/dev/ )
