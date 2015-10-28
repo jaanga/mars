@@ -11,7 +11,7 @@
 ####_Mars Voyager - Dev revision - Code Edit View_ /  [Fullscreen]( http://exploratoria.github.io/lib/code-edit-view/code-edit-view.html#http://jaanga.github.io/terrain-r2/viewers/mars-voyager/mars-voyager-r1.html )
 
 
-[Mars Voyager Gamer Demo Full Screen - Dev]( http://jaanga.github.io/mars/voyager/gamer/mars-voyager-gamer-r1.html )
+[Mars Voyager Gamer Demo Full Screen - Dev]( http://jaanga.github.io/mars/voyager/gamer/dev/index.html )
 
 
 
