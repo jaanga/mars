@@ -3,16 +3,8 @@
 
 [Jaanga]( http://jaanga.github.io/ ) &raquo; [Outer Space]( http://jaanga.github.io/outer-space/ ) &raquo; [Mars]( http://jaanga.github.io/mars ) &raquo; 
 
-[Mars Rover]( index.html )
+[Mars Rover Hotspots]( index.html )
 ===
-
-[Mars Rover 128P Dev]( http://jaanga.github.io/mars/rover/128p/dev/index.html )
-
-
-## Web Page / Source Code
-
-<iframe class=ifr src=http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/mars/rover/128p/mars-rover-128p-multi-tile-r3-1.html width=100% height=600px ></iframe>  
-###### _Mars Rover 128P - Dev revision - Code Edit View_ /  [Edit full screen]( http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/mars/rover/128p/mars-rover-128p-multi-tile-r3-1.html )
 
 
 ## Tourist Hotspots
@@ -27,17 +19,3 @@
 
 
 [Mars Voyager]( http://jaanga.github.io/mars/voyager/gamer/dev/ )
-
-## Contact
-
-* jaanga@googlegroups.com
-
-## Copyright and License
-
-* [Copyright and License]( http://jaanga.github.io/#http://jaanga.github.io/jaanga-copyright-and-mit-license.md ) 
-
-***
-
-<center title="dingbat" >
-# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; >❦</a>
-</center>

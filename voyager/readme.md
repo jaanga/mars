@@ -1,18 +1,19 @@
+<span style=display:none; >[You are now in GitHub source code view - click here to view Read Me file as a web page]( http://jaanga.github.io/mars/voyager/ "View file as a web page." ) </span>
+<input type=button value='You are now in GitHub web page view - Click here to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/mars/tree/gh-pages/voyager/'; />
+
+
 [Jaanga]( http://jaanga.github.io/ ) &raquo; [Outer Space]( http://jaanga.github.io/outer-space/ ) &raquo; [Mars]( http://jaanga.github.io/mars/ ) &raquo;
 
 [Mars Voyager Read Me]( index.html )
 ===
 
-<span style=display:none; >[You are now in GitHub source code view - click here to view Read Me file as a web page]( http://jaanga.github.io/mars/voyager/ "View file as a web page." ) </span>
-<input type=button value='You are now in GitHub web page view - Click here to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/mars/tree/gh-pages/voyager/'; />
+[Mars Voyager Gamer Demo Full Screen - Dev]( http://jaanga.github.io/mars/voyager/gamer/dev/)
 
 
-<iframe src="http://exploratoria.github.io/lib/code-edit-view/code-edit-view.html#http://jaanga.github.io/terrain-r2/viewers/mars-voyager/mars-voyager-r1.html" width=100% height=600px ></iframe>  
-####_Mars Voyager - Dev revision - Code Edit View_ /  [Fullscreen]( http://exploratoria.github.io/lib/code-edit-view/code-edit-view.html#http://jaanga.github.io/terrain-r2/viewers/mars-voyager/mars-voyager-r1.html )
+## Web Page / Source Code
 
-
-[Mars Voyager Gamer Demo Full Screen - Dev]( http://jaanga.github.io/mars/voyager/gamer/mars-voyager-gamer-r1.html )
-
+<iframe class=ifr src=http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/terrain-r2/viewers/mars-voyager/mars-voyager-r1.html width=100% height=600px ></iframe>  
+###### _Mars Voyager - Dev revision - Code Edit View_ /  [Edit full screen]( http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/terrain-r2/viewers/mars-voyager/mars-voyager-r1.html )
 
 
 ## Concept
@@ -91,7 +92,20 @@ Lunar height data source:
 [Lunar Reconnaissance Orbiter Camera]( http://wms.lroc.asu.edu/lroc/view_rdr/WAC_GLD100 )
 
 
-<hr>
+## Contact
+
+* jaanga@googlegroups.com
+
+## Copyright and License
+
+* [Copyright and License]( http://jaanga.github.io/#http://jaanga.github.io/jaanga-copyright-and-mit-license.md ) 
+
+***
+
+<center title="dingbat" >
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; >❦</a>
+</center>
+
 
 
 
