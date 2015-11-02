@@ -7,6 +7,10 @@
 ===
 
 
+## Web Page / Source Code
+
+<iframe class=ifr src="iframe-carousel-r3.html" width=100% height=600px >_Sample Jaanga Mars scripts viewable in web page view only_</iframe>  
+
 <!--
 <iframe id=ifr src="iframe-carousel-r2.html" width=100% height=600px >_Sample Jaanga Mars scripts viewable in web page view only_</iframe>  
 -->
