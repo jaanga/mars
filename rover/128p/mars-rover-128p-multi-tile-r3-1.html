@@ -6,14 +6,14 @@
 <meta name=viewport content='width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0' />
 </head>
 <body>
-<script src=http://rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
-<script src=http://rawgit.com/mrdoob/three.js/r73/examples/js/controls/OrbitControls.js ></script>
-<script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
+<script src=https://rawgit.com/mrdoob/three.js/r73/build/three.min.js ></script>
+<script src=https://rawgit.com/mrdoob/three.js/r73/examples/js/controls/OrbitControls.js ></script>
+<script src=https://rawgit.com/mrdoob/three.js/r73/examples/js/libs/stats.min.js ></script>
 <script>
 
 
 //	var path = 'c:/temp/mars-heightmaps/zz-mars-heightmaps-128p/'; // for developing etc
-	var path = 'http://jaanga.github.io/mars-heightmaps-128p/';
+	var path = 'https://jaanga.github.io/mars-heightmaps-128p/';
 
 	var sourceSize = 128;
 	var pixels = 128;
@@ -37,7 +37,7 @@
 
 //	var heightmapPath = 'c:/temp/mars-heightmaps/zz-mars-heightmaps-128p/';
 
-	var gazetteerPath = 'http://jaanga.github.io/mars/';
+	var gazetteerPath = 'https://jaanga.github.io/mars/';
 	var gazetteerFile = gazetteerPath + 'gazetteer/mars-nomenclature.csv';
 	var gazetteer;
 
@@ -102,7 +102,7 @@
 		menu.style.cssText = ' background-color: #eee; border: 1px #ccc solid; left: -300px;  max-height: ' + ( window.innerHeight - 50 ) + 'px; ' +
 			'opacity: 0.8; overflow: auto; padding: 0 10px; position: absolute; top: 0px; transition: left 1s; width: 260px; z-index: 1; ';
 		menu.innerHTML = '<h2 style=margin:0; ><a href="" >' + document.title + '</a> ' +
-			'<a id=i href=http://jaanga.github.io/mars/rover/#hotspots.md >&#x24D8;</a></h2>' +
+			'<a id=i href=https://jaanga.github.io/mars/rover/#hotspots.md >&#x24D8;</a></h2>' +
 			'<p><select id=selPlace></select></p>' +
 			'<p>' +
 				'<button onclick=controls.reset(); >Zoom All</button> ' +
