@@ -1,19 +1,19 @@
-<span style=display:none; >[You are now in GitHub source code view - click here to view Read Me file as a web page]( http://jaanga.github.io/mars/voyager/ "View file as a web page." ) </span>
+<span style=display:none; >[You are now in GitHub source code view - click here to view Read Me file as a web page]( https://jaanga.github.io/mars/voyager/ "View file as a web page." ) </span>
 <input type=button value='You are now in GitHub web page view - Click here to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/mars/tree/gh-pages/voyager/'; />
 
 
-[Jaanga]( http://jaanga.github.io/ ) &raquo; [Outer Space]( http://jaanga.github.io/outer-space/ ) &raquo; [Mars]( http://jaanga.github.io/mars/ ) &raquo;
+[Jaanga]( https://jaanga.github.io/ ) &raquo; [Outer Space]( https://jaanga.github.io/outer-space/ ) &raquo; [Mars]( https://jaanga.github.io/mars/ ) &raquo;
 
 [Mars Voyager Read Me]( index.html )
 ===
 
-[Mars Voyager Gamer Demo Full Screen - Dev]( http://jaanga.github.io/mars/voyager/gamer/dev/)
+[Mars Voyager Gamer Demo Full Screen - Dev]( https://jaanga.github.io/mars/voyager/gamer/dev/)
 
 
 ## Web Page / Source Code
 
-<iframe class=ifr src=http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/terrain-r2/viewers/mars-voyager/mars-voyager-r1.html width=100% height=600px ></iframe>  
-###### _Mars Voyager - Dev revision - Code Edit View_ /  [Edit full screen]( http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/terrain-r2/viewers/mars-voyager/mars-voyager-r1.html )
+<iframe class=ifr src=https://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#https://jaanga.github.io/terrain-r2/viewers/mars-voyager/mars-voyager-r1.html width=100% height=600px ></iframe>
+###### _Mars Voyager - Dev revision - Code Edit View_ /  [Edit full screen]( https://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#https://jaanga.github.io/terrain-r2/viewers/mars-voyager/mars-voyager-r1.html )
 
 
 ## Concept
@@ -51,13 +51,13 @@ To show the usually hidden backside of the moon as easily as the front
 
 * Slider to adjust vertical scale in real-time
 * Camera position follows cursor keys
-	* Latest camera position is used to control camera position when using cursor keys 
+	* Latest camera position is used to control camera position when using cursor keys
 
 <!--
 * Supports permalinks
-	* [Copernicus]( http://jaanga.github.io/terrain-r2/viewers/moon-rover-mobile/dev/index.html#20 )
-	* [Gassendi]( http://jaanga.github.io/terrain-r2/viewers/moon-rover-mobile/dev/index.html#30 )
-	* [Tycho]( http://jaanga.github.io/terrain-r2/viewers/moon-rover-mobile/dev/index.html#93 )
+	* [Copernicus]( https://jaanga.github.io/terrain-r2/viewers/moon-rover-mobile/dev/index.html#20 )
+	* [Gassendi]( https://jaanga.github.io/terrain-r2/viewers/moon-rover-mobile/dev/index.html#30 )
+	* [Tycho]( https://jaanga.github.io/terrain-r2/viewers/moon-rover-mobile/dev/index.html#93 )
 -->
 
 ## Road Map
@@ -77,19 +77,19 @@ To show the usually hidden backside of the moon as easily as the front
 ## Issues
 
 * Text flashes annoyingly as it moves
- 
+
 ## Sources
 
 Many thanks to:
 
 Gazetteer data sources:
 
-* [Gazetteer of Planetary Nomenclature]( http://planetarynames.wr.usgs.gov/Page/MOON/target )
-* [Lunar 100]( http://the-moon.wikispaces.com/Lunar+100 )
+* [Gazetteer of Planetary Nomenclature]( https://planetarynames.wr.usgs.gov/Page/MOON/target )
+* [Lunar 100]( https://the-moon.wikispaces.com/Lunar+100 )
 
 Lunar height data source:
 
-[Lunar Reconnaissance Orbiter Camera]( http://wms.lroc.asu.edu/lroc/view_rdr/WAC_GLD100 )
+[Lunar Reconnaissance Orbiter Camera]( https://wms.lroc.asu.edu/lroc/view_rdr/WAC_GLD100 )
 
 
 ## Contact
@@ -98,7 +98,7 @@ Lunar height data source:
 
 ## Copyright and License
 
-* [Copyright and License]( http://jaanga.github.io/#http://jaanga.github.io/jaanga-copyright-and-mit-license.md ) 
+* [Copyright and License]( https://jaanga.github.io/#https://jaanga.github.io/jaanga-copyright-and-mit-license.md )
 
 ***
 

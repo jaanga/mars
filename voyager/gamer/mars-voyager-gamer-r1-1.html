@@ -1,425 +1,428 @@
 <!doctype html>
-<html lang=en >
+<html lang=en>
+
 <head>
-<title>Mars Voyager Gamer R1.1</title>
-<meta charset=utf-8 />
-<meta name=viewport content='width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0' />
+	<title>Mars Voyager Gamer R1.1</title>
+	<meta charset=utf-8 />
+	<meta name=viewport content='width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0' />
 </head>
+
 <body>
-<!--
-<script src=http://mrdoob.github.io/three.js/build/three.min.js ></script>
-<script src=http://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
-<script src=http://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+	<!--
+<script src=https://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
 -->
 
-<script src = https://rawgit.com/mrdoob/three.js/dev/build/three.js ></script>
-<script src = https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
-<script src = https://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
-<script>
+	<script src=https://rawgit.com/mrdoob/three.js/dev/build/three.js></script>
+	<script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js></script>
+	<script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js></script>
+	<script>
 
-	var sourceFolder = 'https://jaanga.github.io/mars/';
-//	var sourceFolder = '../../';
+		var sourceFolder = 'https://jaanga.github.io/mars/';
+		//	var sourceFolder = '../../';
 
-	var gazetteerFile = sourceFolder + 'gazetteer/mars-nomenclature.csv';
+		var gazetteerFile = sourceFolder + 'gazetteer/mars-nomenclature.csv';
 
-//	var srcImage = sourceFolder + '/heightmaps/HIQ7R.jpg';
+		//	var srcImage = sourceFolder + '/heightmaps/HIQ7R.jpg';
 
-//	var srcImage = sourceFolder + '/heightmaps/MarsHeight.bmp';
-//	var mapWidth = 1536;
-//	var mapHeight = 768;
+		//	var srcImage = sourceFolder + '/heightmaps/MarsHeight.bmp';
+		//	var mapWidth = 1536;
+		//	var mapHeight = 768;
 
-	var srcImage = sourceFolder + 'heightmaps/megt90n000cb.png';
-	var mapWidth = 1440;
-	var mapHeight = 720;
+		var srcImage = sourceFolder + 'heightmaps/megt90n000cb.png';
+		var mapWidth = 1440;
+		var mapHeight = 720;
 
-	var marsRadiusEquator = 3396;
-	var minPlaceRadiusToDisplay = 50; // radius of feature as defined by the gazetteer
+		var marsRadiusEquator = 3396;
+		var minPlaceRadiusToDisplay = 50; // radius of feature as defined by the gazetteer
 
-	var scale = 1;
-	var scaleAdjust = 0.000005;
-	var scl = scaleAdjust * scale;
+		var scale = 1;
+		var scaleAdjust = 0.000005;
+		var scl = scaleAdjust * scale;
 
-	var selectedPlace = Math.floor( Math.random() * 1837 );
+		var selectedPlace = Math.floor( Math.random() * 1837 );
 
-	var startTime = performance.now();
-	var delayTime = 2000;
-	var autoRotateSpeed = 0.2;
+		var startTime = performance.now();
+		var delayTime = 2000;
+		var autoRotateSpeed = 0.2;
 
-	var placardYPosition = 4500;
-	var placardSize = 1;
+		var placardYPosition = 4500;
+		var placardSize = 1;
 
-	var d2r = Math.PI / 180;
+		var d2r = Math.PI / 180;
 
-	var css, hamburger, menu, stats, renderer, scene, camera, controls;
-	var geometry, material, mesh, axisHelper;
+		var css, hamburger, menu, stats, renderer, scene, camera, controls;
+		var geometry, material, mesh, axisHelper;
 
-	var heightMap, heightMesh, canvasHeightMap, contextHeightMap;
-	var material3D;
+		var heightMap, heightMesh, canvasHeightMap, contextHeightMap;
+		var material3D;
 
-	init();
-	animate();
+		init();
+		animate();
 
-	function init() {
+		function init() {
 
-		var css = document.body.appendChild( document.createElement('style') );
-		css.innerHTML = 'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
-			'h3 { margin: 0; }' +
-			'#bars, #i { font-size: 24pt; text-decoration: none; }' +
-			'#bars { color: pink; } ' +
+			var css = document.body.appendChild( document.createElement( 'style' ) );
+			css.innerHTML = 'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
+				'h3 { margin: 0; }' +
+				'#bars, #i { font-size: 24pt; text-decoration: none; }' +
+				'#bars { color: pink; } ' +
 
-			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; height: 20px; width: 180px; } ' +
-			'input[type=range]::-moz-range-thumb { -moz-appearance: none; background-color: #888; width: 10px; } ' +
-			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; opacity: 0.5; height: 28px; width: 10px; } ' +
-		'';
+				'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; height: 20px; width: 180px; } ' +
+				'input[type=range]::-moz-range-thumb { -moz-appearance: none; background-color: #888; width: 10px; } ' +
+				'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; opacity: 0.5; height: 28px; width: 10px; } ' +
+				'';
 
-		hamburger = document.body.appendChild( document.createElement( 'div' ) );
-		hamburger.style.cssText = ' left: 220px; position: absolute; top: 0px; transition: left 1s; ';
-		hamburger.innerHTML = '<a id=bars href=JavaScript:slideHamburger(); >&#9776;</a>';
+			hamburger = document.body.appendChild( document.createElement( 'div' ) );
+			hamburger.style.cssText = ' left: 220px; position: absolute; top: 0px; transition: left 1s; ';
+			hamburger.innerHTML = '<a id=bars href=JavaScript:slideHamburger(); >&#9776;</a>';
 
-		menu = hamburger.appendChild( document.createElement( 'div' ) );
-		menu.style.cssText = ' background-color: #eee; border: 1px #ccc solid; left: -220px;  max-height: ' + ( window.innerHeight - 50 ) + 'px; ' +
-			'opacity: 0.8; overflow: auto; padding: 0 0 0 0px; position: absolute; top: 0px; transition: left 1s; max-width: 200px; ';
-		menu.innerHTML = '<h3>' +
+			menu = hamburger.appendChild( document.createElement( 'div' ) );
+			menu.style.cssText = ' background-color: #eee; border: 1px #ccc solid; left: -220px;  max-height: ' + ( window.innerHeight - 50 ) + 'px; ' +
+				'opacity: 0.8; overflow: auto; padding: 0 0 0 0px; position: absolute; top: 0px; transition: left 1s; max-width: 200px; ';
+			menu.innerHTML = '<h3>' +
 				'<a href="" >' + document.title + '</a> ' +
 				'<a id=i href=https://jaanga.github.io/mars/voyager/gamer/ >&#x24D8;</a>' +
-			'</h3>' +
-			'<p><select id=selPlace ></select></p>' +
-			'<p id=message ></p>' +
-			'<p>Vertical Scale <input type=range id=inpScale min=0 max=2 step=0.05 value=1 onchange=scale=this.value;scl=scale*scaleAdjust;updateTerrain(); /></p>' +
-			'<p><input type=checkbox id=chkPlacards onchange=togglePlacards(); checked=true /> Display placards</p>' +
-			'<p><input type=checkbox id=inpHelpers onchange=toggleHelpers(); checked=true /> Display axis</p>' +
-			'<p><input type=checkbox id=chkGradient onchange=toggleGradientBackground(); checked /> Display gradient</p>' +
-			'<p><input type=checkbox id=chkRotate checked /> Auto Rotation</p>' +
-		'';
+				'</h3>' +
+				'<p><select id=selPlace ></select></p>' +
+				'<p id=message ></p>' +
+				'<p>Vertical Scale <input type=range id=inpScale min=0 max=2 step=0.05 value=1 onchange=scale=this.value;scl=scale*scaleAdjust;updateTerrain(); /></p>' +
+				'<p><input type=checkbox id=chkPlacards onchange=togglePlacards(); checked=true /> Display placards</p>' +
+				'<p><input type=checkbox id=inpHelpers onchange=toggleHelpers(); checked=true /> Display axis</p>' +
+				'<p><input type=checkbox id=chkGradient onchange=toggleGradientBackground(); checked /> Display gradient</p>' +
+				'<p><input type=checkbox id=chkRotate checked /> Auto Rotation</p>' +
+				'';
 
-		stats = new Stats();
-		stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0; z-index: 100; ';
-		document.body.appendChild( stats.domElement );
+			stats = new Stats();
+			stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0; z-index: 100; ';
+			document.body.appendChild( stats.domElement );
 
-		renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true, clearColor: 0xffffff }  );
-		renderer.setSize( window.innerWidth, window.innerHeight );
-		document.body.appendChild( renderer.domElement );
+			renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true, clearColor: 0xffffff } );
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
 
-		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 15000 );
-		camera.position.set( -600, 1000, 9000 );
+			camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 15000 );
+			camera.position.set( -600, 1000, 9000 );
 
-		controls = new THREE.OrbitControls( camera, renderer.domElement );
-		controls.minDistance = 4000;
-		controls.maxDistance = 15000;
-		controls.enableKeys = false;
+			controls = new THREE.OrbitControls( camera, renderer.domElement );
+			controls.minDistance = 4000;
+			controls.maxDistance = 15000;
+			controls.enableKeys = false;
 
-		scene = new THREE.Scene();
+			scene = new THREE.Scene();
 
-		controls.autoRotateSpeed = autoRotateSpeed;
+			controls.autoRotateSpeed = autoRotateSpeed;
 
-		window.addEventListener( 'resize', onWindowResize, false );
-		renderer.domElement.addEventListener( 'mousemove', onMouseMove, false ); // or mousedown?
+			window.addEventListener( 'resize', onWindowResize, false );
+			renderer.domElement.addEventListener( 'mousemove', onMouseMove, false ); // or mousedown?
 
-		THREE.ImageUtils.crossOrigin = 'anonymous';
+			THREE.ImageUtils.crossOrigin = 'anonymous';
 
-		toggleHelpers();
+			toggleHelpers();
 
-		heightMap = document.createElement( 'img' );
-//		document.body.appendChild( heightMap );
-//		heightMap.style.cssText = 'margin: 20px; position: absolute; top: 0;';
-		heightMap.crossOrigin = 'anonymous';
-		heightMap.onload = updateTerrain;
-		heightMap.src = srcImage;
+			heightMap = document.createElement( 'img' );
+			//		document.body.appendChild( heightMap );
+			//		heightMap.style.cssText = 'margin: 20px; position: absolute; top: 0;';
+			heightMap.crossOrigin = 'anonymous';
+			heightMap.onload = updateTerrain;
+			heightMap.src = srcImage;
 
-		canvasHeightMap = document.createElement( 'canvas' );
-//		document.body.appendChild( canvasHeightMap );
-//		canvasHeightMap.style.cssText = 'margin: 20px; position: absolute; top: 0;';
-		canvasHeightMap.width = mapWidth;
-		canvasHeightMap.height = mapHeight;
-		contextHeightMap = canvasHeightMap.getContext( '2d' );
+			canvasHeightMap = document.createElement( 'canvas' );
+			//		document.body.appendChild( canvasHeightMap );
+			//		canvasHeightMap.style.cssText = 'margin: 20px; position: absolute; top: 0;';
+			canvasHeightMap.width = mapWidth;
+			canvasHeightMap.height = mapHeight;
+			contextHeightMap = canvasHeightMap.getContext( '2d' );
 
-		geometry = new THREE.SphereBufferGeometry( marsRadiusEquator, mapWidth - 1, mapHeight - 1 );
-		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( Math.PI ) );
+			geometry = new THREE.SphereBufferGeometry( marsRadiusEquator, mapWidth - 1, mapHeight - 1 );
+			geometry.applyMatrix( new THREE.Matrix4().makeRotationY( Math.PI ) );
 
-		material3D = new THREE.MeshNormalMaterial( { side: 2 } );
+			material3D = new THREE.MeshNormalMaterial( { side: 2 } );
 
-		heightMesh = new THREE.Mesh( geometry, material3D );
-		heightMesh.rotation.y = Math.PI;
-		scene.add( heightMesh );
+			heightMesh = new THREE.Mesh( geometry, material3D );
+			heightMesh.rotation.y = Math.PI;
+			scene.add( heightMesh );
 
-		placards = new THREE.Object3D();
-		scene.add( placards );
+			placards = new THREE.Object3D();
+			scene.add( placards );
 
-		getGazetteerMars();
+			getGazetteerMars();
 
-		toggleGradientBackground();
-
-	}
-
-	function updateTerrain() {
-
-		contextHeightMap.drawImage( heightMap, 0, 0, heightMap.width, heightMap.height );
-
-		map = contextHeightMap.getImageData( 0, 0, mapWidth, mapHeight ).data;
-
-		heightMesh.geometry = geometry.clone();
-		vertices = heightMesh.geometry.attributes.position.array;
-
-		for ( var i = 0, j = 0; i < vertices.length; j += 4 ) {
-
-			s = 1 + scl * ( map[ j ] + 255 * map[ j + 1 ] ) ;
-
-			vertices[ i++ ] *= s;
-			vertices[ i++ ] *= s;
-			vertices[ i++ ] *= s;
+			toggleGradientBackground();
 
 		}
 
-		heightMesh.geometry.computeFaceNormals();
-		heightMesh.geometry.computeVertexNormals();
+		function updateTerrain() {
 
-	}
+			contextHeightMap.drawImage( heightMap, 0, 0, heightMap.width, heightMap.height );
 
+			map = contextHeightMap.getImageData( 0, 0, mapWidth, mapHeight ).data;
 
-	function getGazetteerMars() {
+			heightMesh.geometry = geometry.clone();
+			vertices = heightMesh.geometry.attributes.position.array;
 
-		var data = requestGazetteer( gazetteerFile );
-		var xmlHttp;
+			for ( var i = 0, j = 0; i < vertices.length; j += 4 ) {
 
-		function requestGazetteer( fileName ) {
+				s = 1 + scl * ( map[ j ] + 255 * map[ j + 1 ] );
 
-			xmlHttp = new XMLHttpRequest();
-			xmlHttp.open( 'GET', fileName, true );
-			xmlHttp.onreadystatechange = callbackGazetteer;
-			xmlHttp.send( null );
+				vertices[ i++ ] *= s;
+				vertices[ i++ ] *= s;
+				vertices[ i++ ] *= s;
+
+			}
+
+			heightMesh.geometry.computeFaceNormals();
+			heightMesh.geometry.computeVertexNormals();
 
 		}
 
-		function callbackGazetteer() {
 
-			if ( xmlHttp.readyState !== 4  || xmlHttp.responseText === '' ) { return; }
+		function getGazetteerMars() {
 
-			var response = xmlHttp.responseText;
+			var data = requestGazetteer( gazetteerFile );
+			var xmlHttp;
 
-			var lines = response.split(/\r\n|\n/);
+			function requestGazetteer( fileName ) {
 
-			gazetteer = [];
+				xmlHttp = new XMLHttpRequest();
+				xmlHttp.open( 'GET', fileName, true );
+				xmlHttp.onreadystatechange = callbackGazetteer;
+				xmlHttp.send( null );
 
-			for ( var i = 0, place; i < lines.length; i++ ) {
+			}
 
-				place = lines[i].split( ',' );
+			function callbackGazetteer() {
 
-				gazetteer.push( [ place[0], parseFloat( place[ 1 ] ), parseFloat( place[ 2 ] ), parseFloat( place[ 3 ] ), place[ 4 ] ] );
+				if ( xmlHttp.readyState !== 4 || xmlHttp.responseText === '' ) { return; }
 
-				if ( parseFloat( place[ 1 ] ) > minPlaceRadiusToDisplay ) {
+				var response = xmlHttp.responseText;
 
-					pos = convertPosition( place[ 2 ], - place[ 3 ], placardYPosition ); // parse float??
+				var lines = response.split( /\r\n|\n/ );
 
-					drawSprite( place[ 0 ], placardSize, 120, pos.x, pos.y, pos.z );
+				gazetteer = [];
+
+				for ( var i = 0, place; i < lines.length; i++ ) {
+
+					place = lines[ i ].split( ',' );
+
+					gazetteer.push( [ place[ 0 ], parseFloat( place[ 1 ] ), parseFloat( place[ 2 ] ), parseFloat( place[ 3 ] ), place[ 4 ] ] );
+
+					if ( parseFloat( place[ 1 ] ) > minPlaceRadiusToDisplay ) {
+
+						pos = convertPosition( place[ 2 ], - place[ 3 ], placardYPosition ); // parse float??
+
+						drawSprite( place[ 0 ], placardSize, 120, pos.x, pos.y, pos.z );
+
+					}
 
 				}
 
+				gazetteer.sort();
+
+				for ( var i = 0, place; i < lines.length; i++ ) {
+
+					selPlace.appendChild( document.createElement( 'option' ) );
+					selPlace.children[ i ].text = gazetteer[ i ][ 0 ];
+
+				}
+
+				selPlace.selectedIndex = selectedPlace;
+
+				message.innerHTML = ( gazetteer[ selectedPlace ][ 4 ] ).replace( /"/g, '' );
+
+				selPlace.onchange = function () {
+
+					var place = gazetteer[ this.selectedIndex ];
+
+					pos = convertPosition( place[ 2 ], - place[ 3 ], placardYPosition );
+
+					drawSprite( place[ 0 ], placardSize, 120, pos.x, pos.y, pos.z );
+
+					pos = convertPosition( place[ 2 ], - place[ 3 ], placardYPosition + 2000 )
+
+					//console.log( place[ 2 ],  - place[ 3 ] , place );
+
+					camera.position.set( pos.x, pos.y, pos.z );
+
+					message.innerHTML = ( place[ 4 ] ).replace( /"/g, '' );
+
+					controls.autoRotate = false;
+					chkRotate.checked = false;
+
+				};
+
 			}
 
-			gazetteer.sort();
+		}
 
-			for ( var i = 0, place; i < lines.length; i++ ) {
+		function convertPosition( lat, lon, radius ) {
 
-				selPlace.appendChild( document.createElement( 'option' ) );
-				selPlace.children[ i ].text = gazetteer[ i  ][ 0 ];
+			var rc = radius * Math.cos( lat * d2r );
+			return v3( rc * Math.cos( lon * d2r ), radius * Math.sin( lat * d2r ), rc * Math.sin( lon * d2r ) );
+
+		}
+
+		// draw placards
+
+		function drawSprite( text, scale, color, x, y, z ) {
+
+			var texture = canvasMultilineText( text, { backgroundColor: color } );
+			texture.minFilter = texture.magFilter = THREE.NearestFilter;
+
+			var spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 0.9, transparent: true } );
+			var sprite = new THREE.Sprite( spriteMaterial );
+			sprite.position.set( x, y, z );
+			sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
+			placards.add( sprite );
+
+			var geometry = new THREE.Geometry();
+			geometry.vertices = [ v3( 0, 0, 0 ), v3( x, y, z ) ];
+			var material = new THREE.LineBasicMaterial( { color: 0xaaaaaa } );
+			var line = new THREE.Line( geometry, material );
+			placards.add( line );
+
+		}
+
+		function canvasMultilineText( textArray, parameters ) {
+
+			var parameters = parameters || {};
+			var width = 0;
+			var canvas = document.createElement( 'canvas' );
+			var context = canvas.getContext( '2d' );
+
+			if ( typeof textArray === 'string' ) textArray = [ textArray ];
+
+			context.font = parameters.font ? parameters.font : '48px sans-serif';
+
+			for ( var i = 0, len = textArray.length; i < len; i++ ) {
+
+				width = context.measureText( textArray[ i ] ).width > width ? context.measureText( textArray[ i ] ).width : width;
 
 			}
 
-			selPlace.selectedIndex = selectedPlace;
+			canvas.width = width + 20; // 480
+			canvas.height = textArray.length * 60;
 
-			message.innerHTML = ( gazetteer[ selectedPlace][ 4 ] ).replace( /"/g, '' ) ;
+			var col = parameters.backgroundColor ? parameters.backgroundColor : 120;
 
-			selPlace.onchange = function() {
+			context.fillStyle = 'hsl( ' + col + ', 80%, 50% )';
+			context.fillRect( 0, 0, canvas.width, canvas.height );
 
-				var place = gazetteer[ this.selectedIndex ];
+			context.lineWidth = 1;
+			context.strokeStyle = '#000';
+			context.strokeRect( 0, 0, canvas.width, canvas.height );
 
-				pos = convertPosition( place[ 2 ], - place[ 3 ], placardYPosition );
+			context.fillStyle = '#000';
+			context.font = parameters.font ? parameters.font : '48px sans-serif';
 
-				drawSprite( place[ 0 ], placardSize, 120, pos.x, pos.y, pos.z );
+			for ( var i = 0, len = textArray.length; i < len; i++ ) {
 
-				pos = convertPosition( place[ 2 ], - place[ 3 ] , placardYPosition + 2000 )
+				context.fillText( textArray[ i ], 10, 48 + i * 60 );
 
-//console.log( place[ 2 ],  - place[ 3 ] , place );
+			}
 
-				camera.position.set( pos.x, pos.y, pos.z );
+			var texture = new THREE.Texture( canvas );
+			texture.minFilter = texture.magFilter = THREE.NearestFilter;
+			texture.needsUpdate = true;
 
-				message.innerHTML = ( place[ 4 ] ).replace( /"/g, '' ) ;
-
-				controls.autoRotate = false;
-				chkRotate.checked = false;
-
-			};
-
-		}
-
-	}
-
-	function convertPosition( lat, lon, radius ) {
-
-		var rc = radius * Math.cos( lat * d2r );
-		return v3( rc * Math.cos( lon * d2r ), radius * Math.sin( lat * d2r ), rc * Math.sin( lon * d2r) );
-
-	}
-
-// draw placards
-
-	function drawSprite( text, scale, color, x, y, z) {
-
-		var texture = canvasMultilineText( text, { backgroundColor: color }  );
-		texture.minFilter = texture.magFilter = THREE.NearestFilter;
-
-		var spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 0.9, transparent: true } );
-		var sprite = new THREE.Sprite( spriteMaterial );
-		sprite.position.set( x, y, z ) ;
-		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
-		placards.add ( sprite );
-
-		var geometry = new THREE.Geometry();
-		geometry.vertices = [ v3( 0, 0, 0 ),  v3( x, y, z ) ];
-		var material = new THREE.LineBasicMaterial( { color: 0xaaaaaa } );
-		var line = new THREE.Line( geometry, material );
-		placards.add( line );
-
-	}
-
-	function canvasMultilineText( textArray, parameters ) {
-
-		var parameters = parameters || {} ;
-		var width = 0;
-		var canvas = document.createElement( 'canvas' );
-		var context = canvas.getContext( '2d' );
-
-		if ( typeof textArray === 'string' ) textArray = [ textArray ];
-
-		context.font = parameters.font ? parameters.font : '48px sans-serif';
-
-		for (var i = 0, len = textArray.length; i < len; i++) {
-
-			width = context.measureText( textArray[i] ).width > width ? context.measureText( textArray[i] ).width : width;
+			return texture;
 
 		}
 
-		canvas.width = width + 20; // 480
-		canvas.height = textArray.length * 60;
+		function togglePlacards() {
 
-		var col = parameters.backgroundColor ? parameters.backgroundColor : 120 ;
+			viz = chkPlacards.checked;
 
-		context.fillStyle = 'hsl( ' + col + ', 80%, 50% )' ;
-		context.fillRect( 0, 0, canvas.width, canvas.height);
-
-		context.lineWidth = 1 ;
-		context.strokeStyle = '#000';
-		context.strokeRect( 0, 0, canvas.width, canvas.height);
-
-		context.fillStyle = '#000' ;
-		context.font = parameters.font ? parameters.font : '48px sans-serif';
-
-		for (var i = 0, len = textArray.length; i < len; i++) {
-
-			context.fillText( textArray[i], 10, 48  + i * 60 );
-
-		}
-
-		var texture = new THREE.Texture( canvas );
-		texture.minFilter = texture.magFilter = THREE.NearestFilter;
-		texture.needsUpdate = true;
-
-		return texture;
-
-	}
-
-	function togglePlacards() {
-
-		viz = chkPlacards.checked;
-
-		placards.traverse( function ( child ) {
+			placards.traverse( function ( child ) {
 
 				child.visible = viz;
 
-		} );
-
-	}
-
-	function toggleHelpers() {
-
-		if ( inpHelpers.checked === true ) {
-
-			axis = new THREE.AxisHelper( 10000 );
-			scene.add( axis );
-
-		} else {
-
-			scene.remove( axis );
+			} );
 
 		}
 
-	}
+		function toggleHelpers() {
 
-	function toggleGradientBackground() {
+			if ( inpHelpers.checked === true ) {
 
-		if ( chkGradient.checked ) {
+				axis = new THREE.AxisHelper( 10000 );
+				scene.add( axis );
 
-			document.body.style.cssText += ' height: ' + window.innerHeight + 'px; ';
+			} else {
 
-			var col1 = Math.random().toString(16).slice(2, 8);
-			var col2 = Math.random().toString(16).slice(2, 8);
-			var col3 = Math.random().toString(16).slice(2, 8);
-			var x = ( Math.random() * window.innerWidth ).toFixed(0);
-			var y = ( Math.random() * window.innerHeight ).toFixed(0);
+				scene.remove( axis );
 
-			document.body.style.backgroundImage = 'radial-gradient( circle farthest-corner at ' + x + 'px ' + y + 'px, #' + col1 + ' 0%, #' + col2 + ' 50%, #' + col3 + ' 100%)';
-
-		} else {
-
-			document.body.style.backgroundImage = '';
+			}
 
 		}
 
-	}
+		function toggleGradientBackground() {
 
-	function slideHamburger() {
+			if ( chkGradient.checked ) {
 
-		hamburger.style.left = hamburger.style.left === '220px' ? 0 : '220px';
+				document.body.style.cssText += ' height: ' + window.innerHeight + 'px; ';
 
-	}
+				var col1 = Math.random().toString( 16 ).slice( 2, 8 );
+				var col2 = Math.random().toString( 16 ).slice( 2, 8 );
+				var col3 = Math.random().toString( 16 ).slice( 2, 8 );
+				var x = ( Math.random() * window.innerWidth ).toFixed( 0 );
+				var y = ( Math.random() * window.innerHeight ).toFixed( 0 );
 
-	function onWindowResize() {
+				document.body.style.backgroundImage = 'radial-gradient( circle farthest-corner at ' + x + 'px ' + y + 'px, #' + col1 + ' 0%, #' + col2 + ' 50%, #' + col3 + ' 100%)';
 
-		camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
+			} else {
 
-		renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.style.backgroundImage = '';
 
-	}
+			}
 
-	function onMouseMove() {
+		}
 
-		startTime = chkRotate.checked ? performance.now() : 1000000 ;
-		controls.autoRotate = false;
+		function slideHamburger() {
 
-	}
+			hamburger.style.left = hamburger.style.left === '220px' ? 0 : '220px';
 
-	function v3( x, y, z ){ return new THREE.Vector3( x, y, z ); }
+		}
 
-	function animate( timestamp ) {
+		function onWindowResize() {
 
-		if ( timestamp - startTime > delayTime && chkRotate.checked ) {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
 
-			controls.autoRotate = true;
+			renderer.setSize( window.innerWidth, window.innerHeight );
 
-		} else {
+		}
 
+		function onMouseMove() {
+
+			startTime = chkRotate.checked ? performance.now() : 1000000;
 			controls.autoRotate = false;
 
 		}
 
-		renderer.render( scene, camera );
-		controls.update();
-		stats.update();
-		requestAnimationFrame( animate );
+		function v3( x, y, z ) { return new THREE.Vector3( x, y, z ); }
 
-	}
+		function animate( timestamp ) {
 
-</script>
+			if ( timestamp - startTime > delayTime && chkRotate.checked ) {
+
+				controls.autoRotate = true;
+
+			} else {
+
+				controls.autoRotate = false;
+
+			}
+
+			renderer.render( scene, camera );
+			controls.update();
+			stats.update();
+			requestAnimationFrame( animate );
+
+		}
+
+	</script>
 </body>
+
 </html>

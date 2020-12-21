@@ -1,8 +1,8 @@
-<span style=display:none; >[You are now in GitHub source code view - click this link to view Read Me file as a web page]( http://jaanga.github.io/mars/images/ "View file as a web page." ) </span>
+<span style=display:none; >[You are now in GitHub source code view - click this link to view Read Me file as a web page]( https://jaanga.github.io/mars/images/ "View file as a web page." ) </span>
 <input type=button onclick=window.location.href='https://github.com/jaanga/mars/tree/gh-pages/images/'; value='You are now in GitHub web page view - Click this button to view Read Me file as source code' />
 
 
-[Jaanga]( http://jaanga.github.io/ ) &raquo; [Outer Space]( http://jaanga.github.io/outer-space/ ) &raquo; [Mars]( http://jaanga.github.io/mars/ ) &raquo;
+[Jaanga]( https://jaanga.github.io/ ) &raquo; [Outer Space]( https://jaanga.github.io/outer-space/ ) &raquo; [Mars]( https://jaanga.github.io/mars/ ) &raquo;
 
 Mars Images Read Me
 ===
@@ -14,7 +14,7 @@ Mars Images Read Me
 
 ## Copyright and License
 
-* [Copyright and License]( http://jaanga.github.io/#http://jaanga.github.io/jaanga-copyright-and-mit-license.md ) 
+* [Copyright and License]( https://jaanga.github.io/#https://jaanga.github.io/jaanga-copyright-and-mit-license.md )
 
 ***
 

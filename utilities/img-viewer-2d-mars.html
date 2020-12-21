@@ -1,131 +1,134 @@
 <!doctype html>
-<html lang=en >
+<html lang=en>
+
 <head>
-<title>img-viewer-2d-mars.html</title>
-<meta charset=utf-8 />
-<meta name=viewport content='width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0' />
+	<title>img-viewer-2d-mars.html</title>
+	<meta charset=utf-8 />
+	<meta name=viewport content='width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0' />
 </head>
+
 <body>
-<script>
+	<script>
 
-	var path = '../heightmaps/'; // for developing etc
-//	var path = 'http://jaanga.github.io/mars/heightmaps/';
+		var path = '../heightmaps/'; // for developing etc
+		//	var path = 'https://jaanga.github.io/mars/heightmaps/';
 
-	var fileName = path  + 'megt90n000cb.img';
+		var fileName = path + 'megt90n000cb.img';
 
-//	var fileName = path  + 'megr90n000cb.img';
+		//	var fileName = path  + 'megr90n000cb.img';
 
-	var width = 1440; // 4P
-	var height = 720;
+		var width = 1440; // 4P
+		var height = 720;
 
-	var xmlHttp;
-	var byteArray;
+		var xmlHttp;
+		var byteArray;
 
-	init();
+		init();
 
-	function init() {
+		function init() {
 
-		var css = document.head.appendChild( document.createElement('style') );
-		css.innerHTML ='body { font: 12pt monospace; }' ;
+			var css = document.head.appendChild( document.createElement( 'style' ) );
+			css.innerHTML = 'body { font: 12pt monospace; }';
 
-		var info = document.body.appendChild( document.createElement( 'div' ) );
-		info.innerHTML = '<h2><a href="" >' + document.title + '</a></h2>' +
-			'<p><a id=download href="" onclick=saveIt(); ><button>Save it</button></a></p>' +
-			'<div id=msg0 >' + fileName + '</div>' +
-			'<div id=msg1 ></div>' +
-			'<canvas id=canvas ></canvas>' +
-		'';
+			var info = document.body.appendChild( document.createElement( 'div' ) );
+			info.innerHTML = '<h2><a href="" >' + document.title + '</a></h2>' +
+				'<p><a id=download href="" onclick=saveIt(); ><button>Save it</button></a></p>' +
+				'<div id=msg0 >' + fileName + '</div>' +
+				'<div id=msg1 ></div>' +
+				'<canvas id=canvas ></canvas>' +
+				'';
 
-//		canvas = document.createElement( 'canvas' );
-//		canvas = document.body.appendChild( document.createElement( 'canvas' ) );
-		canvas.width = width;
-		canvas.height = height;
-		canvas.style.cssText = 'border: 1px solid gray; ';
-		context = canvas.getContext( '2d' );
+			//		canvas = document.createElement( 'canvas' );
+			//		canvas = document.body.appendChild( document.createElement( 'canvas' ) );
+			canvas.width = width;
+			canvas.height = height;
+			canvas.style.cssText = 'border: 1px solid gray; ';
+			context = canvas.getContext( '2d' );
 
-		imageData = context.createImageData( canvas.width, canvas.height );
-		imageDataData = imageData.data;
+			imageData = context.createImageData( canvas.width, canvas.height );
+			imageDataData = imageData.data;
 
-		requestIMGFile( fileName );
-
-	}
-
-	function requestIMGFile( fileName, startByte, finishByte ) {
-
-		xmlHttp = new XMLHttpRequest();
-		xmlHttp.crossOrigin = 'Anonymous';
-		xmlHttp.responseType = 'arraybuffer';
-		xmlHttp.open( 'GET', fileName, true );
-		xmlHttp.onreadystatechange = getData;
-//		xmlHttp.setRequestHeader('Range', 'bytes=' + startByte + '-' + finishByte );
-		xmlHttp.send( null );
-
-	}
-
-	function getData() {
-
-		if ( xmlHttp.readyState !== 4  ) { return; }
-
-//		byteArray = new Int16Array( xmlHttp.response );
-
-		byteArray = new Uint8Array( xmlHttp.response );
-
-
-		var index = 0;
-		elevations = [];
-
-		min = 1000000;
-		max = -1000000;
-
-		for ( var i = 0; i < byteArray.length; ) {
-
-
-			elevation = 256 * byteArray[ i++ ] + byteArray[ i++ ];
-
-			elevation = elevation < 32767 ? elevation : elevation - 65535;
-
-			elevation += 32767;
-			elevations.push( elevation );
-
-			imageDataData[ index++ ] = ( elevation & 0x0000ff );
-			imageDataData[ index++ ] = ( elevation & 0x00ff00 ) >> 8;
-			imageDataData[ index++ ] = ( elevation & 0xff0000 ) >> 16;
-			imageDataData[ index++ ] = 255;
+			requestIMGFile( fileName );
 
 		}
 
-		context.putImageData( imageData, 0, 0 );
+		function requestIMGFile( fileName, startByte, finishByte ) {
 
-		msg1.innerHTML = 'min: ' + min + ' max: ' + max;
+			xmlHttp = new XMLHttpRequest();
+			xmlHttp.crossOrigin = 'Anonymous';
+			xmlHttp.responseType = 'arraybuffer';
+			xmlHttp.open( 'GET', fileName, true );
+			xmlHttp.onreadystatechange = getData;
+			//		xmlHttp.setRequestHeader('Range', 'bytes=' + startByte + '-' + finishByte );
+			xmlHttp.send( null );
 
-/*
-			context.moveTo( 0, 360 );
-			context.lineTo( 1440, 360 );
-			context.stroke();
+		}
 
-			context.moveTo( 720, 0 );
-			context.lineTo( 720, 720 );
-			context.stroke();
-*/
+		function getData() {
 
-	}
+			if ( xmlHttp.readyState !== 4 ) { return; }
 
-	function saveIt() {
+			//		byteArray = new Int16Array( xmlHttp.response );
 
-		slash = navigator.platform === 'Win32' ? '\\' : '/' ;
+			byteArray = new Uint8Array( xmlHttp.response );
 
-		name = fileName.substr( 1 + fileName.lastIndexOf( slash ) );
 
-		name = name.replace(/\.img|\.html|\.json|\.js|\.obj|\.stl/gi,'-') + width + 'x' + height + '.png';
+			var index = 0;
+			elevations = [];
 
-		var c2du = canvas.toDataURL();
+			min = 1000000;
+			max = -1000000;
 
-		download.download = name;
+			for ( var i = 0; i < byteArray.length; ) {
 
-		download.href = c2du;
 
-	}
+				elevation = 256 * byteArray[ i++ ] + byteArray[ i++ ];
 
-</script>
+				elevation = elevation < 32767 ? elevation : elevation - 65535;
+
+				elevation += 32767;
+				elevations.push( elevation );
+
+				imageDataData[ index++ ] = ( elevation & 0x0000ff );
+				imageDataData[ index++ ] = ( elevation & 0x00ff00 ) >> 8;
+				imageDataData[ index++ ] = ( elevation & 0xff0000 ) >> 16;
+				imageDataData[ index++ ] = 255;
+
+			}
+
+			context.putImageData( imageData, 0, 0 );
+
+			msg1.innerHTML = 'min: ' + min + ' max: ' + max;
+
+			/*
+						context.moveTo( 0, 360 );
+						context.lineTo( 1440, 360 );
+						context.stroke();
+			
+						context.moveTo( 720, 0 );
+						context.lineTo( 720, 720 );
+						context.stroke();
+			*/
+
+		}
+
+		function saveIt() {
+
+			slash = navigator.platform === 'Win32' ? '\\' : '/';
+
+			name = fileName.substr( 1 + fileName.lastIndexOf( slash ) );
+
+			name = name.replace( /\.img|\.html|\.json|\.js|\.obj|\.stl/gi, '-' ) + width + 'x' + height + '.png';
+
+			var c2du = canvas.toDataURL();
+
+			download.download = name;
+
+			download.href = c2du;
+
+		}
+
+	</script>
 </body>
+
 </html>
